@@ -1,77 +1,72 @@
+import Dependencies._
 
-// The simplest possible sbt build file is just one line:
+ThisBuild / scalaVersion     := "3.3.6"
+ThisBuild / version          := "0.1.0-SNAPSHOT"
+ThisBuild / organization     := "fr.esgi"
+ThisBuild / organizationName := "esgi"
+// Scalafmt
+ThisBuild / scalafmtOnCompile := true
 
-scalaVersion := "2.13.12"
-// That is, to create a valid sbt build, all you've got to do is define the
-// version of Scala you'd like your project to use.
+run / fork := true
+run / connectInput := true
+Compile / mainClass := Some("fr.esgi.al.funprog.Main")
 
-// ============================================================================
-
-// Lines like the above defining `scalaVersion` are called "settings". Settings
-// are key/value pairs. In the case of `scalaVersion`, the key is "scalaVersion"
-// and the value is "2.13.12"
-
-// It's possible to define many kinds of settings, such as:
-
-name := "hello-world"
-organization := "ch.epfl.scala"
-version := "1.0"
-
-// Note, it's not required for you to define these three settings. These are
-// mostly only necessary if you intend to publish your library's binaries on a
-// place like Sonatype.
+lazy val root = (project in file("."))
+  .settings(
+    name := "funprog-AL",
+    scalacOptions ++= compilerOptions,
+    libraryDependencies ++= Seq(
+      betterFiles,
+      munit % Test,
+      scalatic
+    ),
+    // Wartremover
+    wartremoverWarnings ++= Warts.all,
+    wartremoverErrors ++= Warts.all
+  )
 
 
-// Want to use a published library in your project?
-// You can define other libraries as dependencies in your build like this:
+val compilerOptions = Seq(
+  // Common settings
+  //
+  "-deprecation", // Emit warning and location for usages of deprecated APIs.
+  "-encoding",
+  "utf-8", // Specify character encoding used by source files.
+  "-explain-types", // Explain type errors in more detail.
+  "-explain",
+  "-feature", // Emit warning and location for usages of features that should be imported explicitly.
+  "-unchecked", // Enable additional warnings where generated code depends on assumptions.
+  "-Ysafe-init", // Wrap field accessors to throw an exception on uninitialized access.
+  "-Werror", // Fail the compilation if there are any warnings.
+  "-Ycheck-all-patmat",
+  "-Ycheck-reentrant",
+  "-Yexplicit-nulls",
+  // Warning settings
+  //
+  "-Wvalue-discard",
+  "-Wnonunit-statement",
+  "-Wunused:imports,privates,locals,explicits,implicits,params,linted",
+  // // Linting
+  // //
+  // "-Xlint:adapted-args",
+  // "-Xlint:inaccessible", // Warn about inaccessible types in method signatures.
+  // "-Xlint:infer-any", // Warn when a type argument is inferred to be `Any`.
+  // "-Xlint:missing-interpolator",
+  // "-Xlint:doc-detached",
+  // "-Xlint:private-shadow",
+  // "-Xlint:type-parameter-shadow",
+  // "-Xlint:poly-implicit-overload",
+  // "-Xlint:option-implicit",
+  // "-Xlint:package-object-classes",
+  // "-Xlint:stars-align",
+  // "-Xlint:constant",
+  // "-Xlint:nonlocal-return",
+  // "-Xlint:valpattern",
+  // "-Xlint:eta-zero,eta-sam",
+  // "-Xlint:deprecation",
+  // "-Xlint:nullary-unit", // Warn when nullary methods return Unit.
+  // "-Ywarn-value-discard", // Warn when non-Unit expression results are unused.
+  // "-Xfatal-warnings"
+)
 
-libraryDependencies += "org.scala-lang.modules" %% "scala-parser-combinators" % "2.3.0"
-
-// Here, `libraryDependencies` is a set of dependencies, and by using `+=`,
-// we're adding the scala-parser-combinators dependency to the set of dependencies
-// that sbt will go and fetch when it starts up.
-// Now, in any Scala file, you can import classes, objects, etc., from
-// scala-parser-combinators with a regular import.
-
-// TIP: To find the "dependency" that you need to add to the
-// `libraryDependencies` set, which in the above example looks like this:
-
-// "org.scala-lang.modules" %% "scala-parser-combinators" % "2.3.0"
-
-// You can use Scaladex, an index of all known published Scala libraries. There,
-// after you find the library you want, you can just copy/paste the dependency
-// information that you need into your build file. For example, on the
-// scala/scala-parser-combinators Scaladex page,
-// https://index.scala-lang.org/scala/scala-parser-combinators, you can copy/paste
-// the sbt dependency from the sbt box on the right-hand side of the screen.
-
-// IMPORTANT NOTE: while build files look _kind of_ like regular Scala, it's
-// important to note that syntax in *.sbt files doesn't always behave like
-// regular Scala. For example, notice in this build file that it's not required
-// to put our settings into an enclosing object or class. Always remember that
-// sbt is a bit different, semantically, than vanilla Scala.
-
-// ============================================================================
-
-// Most moderately interesting Scala projects don't make use of the very simple
-// build file style (called "bare style") used in this build.sbt file. Most
-// intermediate Scala projects make use of so-called "multi-project" builds. A
-// multi-project build makes it possible to have different folders which sbt can
-// be configured differently for. That is, you may wish to have different
-// dependencies or different testing frameworks defined for different parts of
-// your codebase. Multi-project builds make this possible.
-
-// Here's a quick glimpse of what a multi-project build looks like for this
-// build, with only one "subproject" defined, called `root`:
-
-// lazy val root = (project in file(".")).
-//   settings(
-//     inThisBuild(List(
-//       organization := "ch.epfl.scala",
-//       scalaVersion := "2.13.12"
-//     )),
-//     name := "hello-world"
-//   )
-
-// To learn more about multi-project builds, head over to the official sbt
-// documentation at http://www.scala-sbt.org/documentation.html
+val consoleOptions = Seq()
