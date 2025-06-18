@@ -1,0 +1,48 @@
+# Build targets
+/target/
+/metals.sbt
+/.bloop/
+/.bsp/
+/.metals/
+.project
+/.idea/
+/out/
+/dist/
+/logs/
+
+# VS Code
+.vscode/
+
+# MacOS
+.DS_Store
+
+# IntelliJ
+*.iml
+*.iws
+.idea/
+
+# SBT specific
+/.history
+/lib_managed/
+/src_managed/
+/.ensime
+.ensime_cache/
+/sbt-dist/
+/target/
+/project/target/
+/project/project/
+
+# Mill specific
+/out/
+
+# Metals
+/metals.sbt
+/.metals/
+.bloop/
+/.bsp/
+/.worksheet/
+
+# Others
+*.log
+*.class
+*.lock
